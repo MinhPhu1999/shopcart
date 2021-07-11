@@ -1,0 +1,20 @@
+.loading {
+	text-align: center;
+	font-size: 4rem;
+	color: #ff6f61;
+}
+.alert {
+	margin-bottom: 12px;
+	font-size: 16px;
+	padding: 0.6rem;
+	border: 0.1rem solid transparent;
+	border-radius: 0.5rem;
+}
+.alert-info {
+	color: #2020a0;
+	background-color: #f3f6ff;
+}
+.alert-danger {
+	color: #a02020;
+	background-color: #ffe0e0e0;
+}
