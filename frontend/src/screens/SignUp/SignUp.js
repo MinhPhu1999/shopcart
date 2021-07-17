@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { register } from '../../redux/actions/userActions';
-import MessageBox from '../../components/Config/MessageBox';
+import MessageBox from '../../components/Config/MessageBox/MessageBox';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import { toast } from 'react-toastify';
 import {

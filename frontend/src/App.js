@@ -15,9 +15,7 @@ import Navbar from './components/Navbar/Navbar';
 import Backdrop from './components/Backdrop/Backdrop';
 import SideDrawer from './components/SideDrawer/SideDrawer';
 import Footer from './components/Footer/Footer';
-
-//Private
-import PrivateRoute from './components/Config/Private/PrivateRoute';
+import NotFound from './components/NotFound/NotFound';
 
 function App() {
 	const [sideToggle, setSideToggle] = useState(false);
@@ -38,6 +36,7 @@ function App() {
 						component={ProductScreen}
 					/>
 					<Route exact path="/cart" component={CartScreen} />
+					<Route path="*" exact component={NotFound}/>
 				</Switch>
 			</main>
 			<Footer />

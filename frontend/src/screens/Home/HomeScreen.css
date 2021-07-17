@@ -12,7 +12,20 @@
 
 .homescreen_products {
 	display: grid;
-	grid-template-columns: repeat(4,1fr);
+	grid-template-columns: repeat(4, 1fr);
+}
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+}
+
+.pagination > ul > li > button {
+	height: 34px;
+	min-width: 34px;
+	font-size: 1.175rem;
+	margin: 0 6px;
 }
 
 @media (max-width: 1232px) {
@@ -32,4 +45,3 @@
 		grid-template-columns: 1fr;
 	}
 }
-

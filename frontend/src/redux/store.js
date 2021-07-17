@@ -4,7 +4,12 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import Cookie from 'js-cookie';
 
 //Reducer
-import { cartReducer } from './reducers/cartReducers';
+import {
+	cartPostReducer,
+	cartGetReducer,
+	removeCartPostReducer,
+	changeQty,
+} from './reducers/cartReducers';
 import {
 	getProductDetailsReducer,
 	getProductsReducer,
@@ -14,7 +19,10 @@ import { userLoginReducer, userRegisterReducer } from './reducers/userReducers';
 const userInfo = Cookie.getJSON('userInfo') || null;
 
 const reducer = combineReducers({
-	cart: cartReducer,
+	cartGet: cartGetReducer,
+	cartAdd: cartPostReducer,
+	cartRemove: removeCartPostReducer,
+	cartChange: changeQty,
 
 	getProducts: getProductsReducer,
 	getProductDetails: getProductDetailsReducer,
@@ -25,14 +33,10 @@ const reducer = combineReducers({
 
 const middleware = [thunk];
 
-const cartFromLocalStorage = localStorage.getItem('cart')
-	? JSON.parse(localStorage.getItem('cart'))
-	: [];
+const cartItems = Cookie.getJSON('cartItems') || [];
 
 const INITIAL_STATE = {
-	cart: {
-		cartItems: cartFromLocalStorage,
-	},
+	cartGet: { cartItems },
 	userLogin: { userInfo },
 };
 

@@ -4,13 +4,16 @@ import { useDispatch, useSelector } from 'react-redux';
 
 //Actions
 import { getProductDetails } from '../../redux/actions/productActions';
-import { addToCart } from '../../redux/actions/cartActions';
+import { addCart } from '../../redux/actions/cartActions';
 
 const ProductScreen = ({ match, history }) => {
-	const [qty, setQty] = useState(1);
+	const [quantity, setQuantity] = useState(1);
 	const dispatch = useDispatch();
 	const productDetails = useSelector(state => state.getProductDetails);
 	const { loading, error, product } = productDetails;
+
+	const userLogin = useSelector(state => state.userLogin);
+	const { userInfo } = userLogin;
 
 	useEffect(() => {
 		if (product && match.params.id !== product._id) {
@@ -18,9 +21,19 @@ const ProductScreen = ({ match, history }) => {
 		}
 	}, [dispatch, product, match]);
 
-	const addToCartHandler = () => {
-		dispatch(addToCart(product._id, qty));
-		history.push('/cart');
+	const addToCartHandler = (_id, name, price, imageUrl, quantity) => {
+		if (!userInfo) {
+			history.push('/signin');
+		} else {
+			let products = {
+				_id: _id,
+				name: name,
+				price: price,
+				imageUrl: imageUrl,
+				quantity: quantity,
+			};
+			dispatch(addCart(userInfo.data.user._id, products));
+		}
 	};
 
 	return (
@@ -58,8 +71,8 @@ const ProductScreen = ({ match, history }) => {
 							<p>
 								Qty
 								<select
-									value={qty}
-									onChange={e => setQty(e.target.value)}
+									value={quantity}
+									onChange={e => setQuantity(e.target.value)}
 								>
 									{[
 										...Array(product.countInStock).keys(),
@@ -73,7 +86,15 @@ const ProductScreen = ({ match, history }) => {
 							<p>
 								<button
 									type="button"
-									onClick={addToCartHandler}
+									onClick={() =>
+										addToCartHandler(
+											product._id,
+											product.name,
+											product.price,
+											product.imageUrl,
+											quantity,
+										)
+									}
 								>
 									Add To Cart
 								</button>

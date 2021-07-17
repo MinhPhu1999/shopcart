@@ -1,4 +1,4 @@
-import './Config.css';
+import '../../Config/Config.css';
 
 export default function MessageBox(props) {
 	return (

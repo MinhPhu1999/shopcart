@@ -1,19 +1,41 @@
 import './Navbar.css';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Menu, MenuItem } from '@material-ui/core';
+import { ExitToApp } from '@material-ui/icons';
+import { logout } from '../../redux/actions/userActions';
 
 const Navbar = ({ click }) => {
-	const cart = useSelector(state => state.cart);
+	const cart = useSelector(state => state.cartGet);
 	const { cartItems } = cart;
 
 	const userLogin = useSelector(state => state.userLogin);
 	const { userInfo } = userLogin;
 
-	console.log(userInfo)
+	const [anchorEl, setAnchorEl] = useState(null);
+
+	const dispatch = useDispatch();
 
 	const getCartCount = () => {
-		return cartItems.reduce((qty, item) => qty + Number(item.qty), 0);
+		return cartItems?.reduce(
+			(quantity, item) => quantity + Number(item.quantity),
+			0,
+		);
 	};
+
+	const openMenu = event => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const closeMenu = () => {
+		setAnchorEl(null);
+	};
+
+	const logoutHandle = () => {
+		dispatch(logout());
+	};
+
 	return (
 		<div className="navbar__wrapper">
 			<nav className="navbar">
@@ -24,7 +46,6 @@ const Navbar = ({ click }) => {
 					</div>
 				</Link>
 
-				{/**links */}
 				{userInfo ? (
 					<ul className="navbar__links">
 						<li>
@@ -32,17 +53,65 @@ const Navbar = ({ click }) => {
 								<i className="fas fa-shopping-cart"></i>
 								<span>
 									Cart
-									<span className="cartlogo__badge">
-										{getCartCount()}
-									</span>
+									{cartItems?.length > 0 && (
+										<span className="cartlogo__badge">
+											{getCartCount()}
+										</span>
+									)}
 								</span>
 							</Link>
 						</li>
 						<li>
-							<div className="navbar__username">
+							<button
+								className="navbar__username"
+								onClick={openMenu}
+							>
 								{`Hello ${userInfo.data.user.name}`}
-							</div>
-							{/* <Link to="/">Shop</Link> */}
+							</button>
+							<Menu
+								className="menu"
+								anchorEl={anchorEl}
+								open={!!anchorEl}
+								keepMounted
+								onClose={closeMenu}
+								anchorOrigin={{
+									vertical: 'bottom',
+									horizontal: 'left',
+								}}
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'left',
+								}}
+							>
+								<MenuItem>
+									<Link
+										to="/"
+										className="logout-link"
+										onClick={logoutHandle}
+									>
+										<span className="logout">
+											<ExitToApp className="logout-icon" />
+											Log Out
+										</span>
+									</Link>
+								</MenuItem>
+								{/* <MenuItem>
+									<Link to="/" className="logout-link">
+										<span className="logout">
+											<ExitToApp className="logout-icon" />
+											Log Out
+										</span>
+									</Link>
+								</MenuItem>
+								<MenuItem>
+									<Link to="/" className="logout-link">
+										<span className="logout">
+											<ExitToApp className="logout-icon" />
+											Log Out
+										</span>
+									</Link>
+								</MenuItem> */}
+							</Menu>
 						</li>
 					</ul>
 				) : (

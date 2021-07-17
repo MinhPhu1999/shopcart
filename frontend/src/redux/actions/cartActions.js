@@ -1,29 +1,108 @@
-import * as actionTypes from '../constants/cartConstants';
 import axios from 'axios';
+import Cookie from 'js-cookie';
+import {
+	CART_ADD_POST_FAIL,
+	CART_ADD_POST_SUCCESS,
+	CART_ADD_POST_REQUEST,
+	CART_EMPTY,
+	CART_LIST_FAIL,
+	CART_LIST_SUCCESS,
+	CART_LIST_REQUEST,
+	CART_REMOVE_POST_SUCCESS,
+	CART_REMOVE_POST_REQUEST,
+	CART_REMOVE_POST_FAIL,
+	CART_CHANGEQTY_FAIL,
+	CART_CHANGEQTY_SUCCESS,
+	CART_CHANGEQTY_REQUEST,
+} from '../constants/cartConstants';
 
-export const addToCart = (id, qty) => async (dispatch, getState) => {
-	const { data } = await axios.get(`/api/products/${id}`);
+const addCart = (id_user, products) => async (dispatch, getState) => {
+	dispatch({ type: CART_ADD_POST_REQUEST, payload: { id_user, products } });
+	try {
+		const { data } = await axios.post('/api/cart/add', {
+			id_user,
+			products,
+		});
+		dispatch({ type: CART_ADD_POST_SUCCESS, payload: data });
+		dispatch(getCart(id_user));
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message;
+		dispatch({ type: CART_ADD_POST_FAIL, payload: message });
+	}
+};
 
-	dispatch({
-		type: actionTypes.ADD_TO_CART,
-		payload: {
-			product: data._id,
-			name: data.name,
-			imageUrl: data.imageUrl,
-			price: data.price,
-			countInStock: data.countInStock,
-			qty
+const getCart = id_user => async (dispatch, getState) => {
+	dispatch({ type: CART_LIST_REQUEST, payload: id_user });
+	try {
+		const { data } = await axios.get('/api/cart/' + id_user);
+
+		dispatch({ type: CART_LIST_SUCCESS, payload: data });
+
+		const {
+			cartGet: { cartItems },
+		} = getState();
+		Cookie.set('cartItems', JSON.stringify(cartItems));
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message;
+		dispatch({ type: CART_LIST_FAIL, payload: message });
+	}
+};
+
+const removeCart = (id_user, id_product) => async (dispatch, getState) => {
+	dispatch({ type: CART_REMOVE_POST_REQUEST, payload: id_user, id_product });
+
+	try {
+		const { data } = await axios.put('/api/cart/remove', {
+			id_user,
+			id_product,
+		});
+		dispatch({
+			type: CART_REMOVE_POST_SUCCESS,
+			payload: { id_user, id_product },
+		});
+		Cookie.remove('cartItems');
+		dispatch(getCart(id_user));
+	} catch (error) {
+		const message =
+			error.response && error.response.data.message
+				? error.response.data.message
+				: error.message;
+		dispatch({ type: CART_REMOVE_POST_FAIL, payload: message });
+	}
+};
+
+const changeQty =
+	(id_user, id_product, quantity) => async (dispatch, getState) => {
+		dispatch({
+			type: CART_CHANGEQTY_REQUEST,
+			payload: { id_user, id_product, quantity },
+		});
+
+		try {
+			const { data } = await axios.put('/api/cart/changeqty', {
+				id_user,
+				id_product,
+				quantity,
+			});
+			dispatch({
+				type: CART_CHANGEQTY_SUCCESS,
+				payload: data,
+				success: true,
+			});
+			dispatch(getCart(id_user));
+		} catch (error) {
+			const message =
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message;
+			dispatch({ type: CART_CHANGEQTY_FAIL, payload: message });
 		}
-	})
+	};
 
-	localStorage.setItem('cart', JSON.stringify(getState().cart.cartItems));
-};
-
-export const removeFromCart = (id) => (dispatch, getState) => {
-	dispatch({
-		type: actionTypes.REMOVE_FROM_CART,
-		payload: id
-	});
-
-	localStorage.setItem('cart',JSON.stringify(getState().cart.cartItems));
-};
+export { addCart, getCart, removeCart, changeQty };

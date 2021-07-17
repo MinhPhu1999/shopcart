@@ -65,7 +65,31 @@
 	border-radius: 10px;
     background-color: #f4f4f4;
     padding: 6px 6px;
-	font-size: 18px;
+	font-size: 16px;
+	cursor: pointer;
+	border: none;
+}
+/* Logout */
+
+.menu {
+	margin-top: 42px;
+	border-radius: 10px;
+	min-width: 120px;
+}
+
+.logout-link {
+	text-decoration: none;
+	color: #000;
+}
+
+.logout {
+	margin-right: 4px;
+	display: flex;
+}
+
+.logout-icon {
+	margin-right: 6px;
+	font-size: 1.4rem;
 }
 
 .cartlogo__badge {

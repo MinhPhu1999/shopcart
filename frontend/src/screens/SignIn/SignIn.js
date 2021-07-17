@@ -15,7 +15,7 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import { toast } from 'react-toastify';
 
-import MessageBox from '../../components/Config/MessageBox';
+import MessageBox from '../../components/Config/MessageBox/MessageBox';
 import useStyles from '../../components/Config/Account/useStyles';
 import { login } from '../../redux/actions/userActions';
 

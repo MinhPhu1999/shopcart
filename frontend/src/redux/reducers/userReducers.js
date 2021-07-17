@@ -5,6 +5,7 @@ import {
 	USER_SIGNIN_FAIL,
 	USER_SIGNIN_REQUEST,
 	USER_SIGNIN_SUCCESS,
+	USER_SIGNOUT,
 } from '../constants/userConstants';
 
 function userLoginReducer(state = {}, action) {
@@ -15,6 +16,8 @@ function userLoginReducer(state = {}, action) {
 			return { loading: false, userInfo: action.payload };
 		case USER_SIGNIN_FAIL:
 			return { loading: false, error: action.payload };
+		case USER_SIGNOUT:
+			return {};
 		default:
 			return state;
 	}
