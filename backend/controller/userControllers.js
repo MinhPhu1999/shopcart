@@ -45,4 +45,27 @@ const loginAccount = async (req, res) => {
 	}
 };
 
+const forgotPassword = async (req, res) => {
+	try {
+		let userF = null;
+		userF = await User.findOne({ email: req.body.email });
+		if (!userF) {
+			return res.status(404).json({ message: 'User not found' });
+		}
+		if (!bcrypt.compareSync(req.body.password, userF.password)) {
+			return res.status(400).json({ message: 'Password wrong' });
+		}
+		res.status(200).json({
+			message: 'login success',
+			user: {
+				email: userF.email,
+				name: `${userF.firstName} ${userF.lastName}`,
+				_id: userF._id,
+			},
+		});
+	} catch {
+		res.status(500).json({ message: 'Login failure' });
+	}
+};
+
 module.exports = { registerAcount, loginAccount };

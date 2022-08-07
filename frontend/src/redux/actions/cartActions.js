@@ -58,7 +58,7 @@ const removeCart = (id_user, id_product) => async (dispatch, getState) => {
 	dispatch({ type: CART_REMOVE_POST_REQUEST, payload: id_user, id_product });
 
 	try {
-		const { data } = await axios.put('/api/cart/remove', {
+		await axios.put('/api/cart/remove', {
 			id_user,
 			id_product,
 		});

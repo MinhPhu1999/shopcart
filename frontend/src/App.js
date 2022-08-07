@@ -9,6 +9,7 @@ import ProductScreen from './screens/Product/ProductScreen';
 import CartScreen from './screens/Cart/CartScreen';
 import SignIn from './screens/SignIn/SignIn';
 import SignUp from './screens/SignUp/SignUp';
+import ResetScreen from './screens/ResetScreen/ResetScreen';
 
 //Components
 import Navbar from './components/Navbar/Navbar';
@@ -36,7 +37,8 @@ function App() {
 						component={ProductScreen}
 					/>
 					<Route exact path="/cart" component={CartScreen} />
-					<Route path="*" exact component={NotFound}/>
+					<Route exact path="/reset" component={ResetScreen} />
+					<Route path="*" exact component={NotFound} />
 				</Switch>
 			</main>
 			<Footer />

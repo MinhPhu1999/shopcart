@@ -78,7 +78,6 @@ const removeFromCart = async (req, res) => {
 
 const changeQty = async (req, res) => {
 	const { id_user, id_product, quantity } = req.body;
-	console.log(req.body);
 	try {
 		let cartFind = await Cart.findOne({ id_user: id_user });
 		let index = cartFind.products.findIndex(e => e._id === id_product);

@@ -5,10 +5,10 @@ import { Pagination } from '@material-ui/lab';
 
 //Componts
 import Product from '../../components/Product/Product';
+import LoadingBackdrop from '../../components/Config/LoadingBackdrop/LoadingBackdrop';
 
 //Actions
 import { getProducts as listProducts } from '../../redux/actions/productActions';
-
 
 const HomeScreen = () => {
 	const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const HomeScreen = () => {
 	const { products, loading, error, numberOfPages } = getProducts;
 
 	useEffect(() => {
-		dispatch(listProducts(pageNumber, 6));
+		dispatch(listProducts(pageNumber, 4));
 	}, [dispatch, pageNumber]);
 
 	const handleChange = (event, value) => {
@@ -30,7 +30,10 @@ const HomeScreen = () => {
 			<h2 className="homescreen__title">Latest Product</h2>
 			<div className="homescreen_products">
 				{loading ? (
-					<h2>Loading...</h2>
+					<>
+						<LoadingBackdrop open={loading} />
+						<div style={{ height: '180px' }}></div>
+					</>
 				) : error ? (
 					<h2>{error}</h2>
 				) : (

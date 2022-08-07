@@ -49,14 +49,17 @@
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
-.right__info  p {
+.right__info p {
 	padding: 1rem;
-	font-size: 0.8rem;
+	font-size: 0.9rem;
 	display: grid;
-	grid-template-columns: repeat(2,1fr);
+	align-items: center;
+	grid-template-columns: repeat(2, 1fr);
 }
 
 .right__info p > button {
+	font-size: 18px;
+	border-radius: 20px;
 	grid-column: 1/-1;
 	padding: 10px 16px;
 	background: #333;
@@ -71,7 +74,7 @@
 	color: #274b2c;
 }
 
-.right__info  select {
+.right__info select {
 	padding: 10px 16px;
 }
 

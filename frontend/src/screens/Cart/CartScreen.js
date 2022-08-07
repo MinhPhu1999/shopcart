@@ -1,9 +1,9 @@
 import './CartScreen.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 //Components
 import CartItem from '../../components/CartItem/CartItem';
-
 
 //Actions
 
@@ -51,10 +51,26 @@ const CartScreen = ({ match }) => {
 			) : (
 				<div className="cartscreen">
 					<div className="cartscreen__left">
-						<h2>Shoppong Cart</h2>
-						{cartItems.length === 0 ? (
+						{/* <h2>Shoppong Cart</h2> */}
+						{cartItems.length === 0 || cartItems === undefined ? (
 							<div>
-								Your cart is empty <Link to="/"> Go Back</Link>
+								<div className="empty-cart">
+									<img
+										className="empty-cart-img"
+										src="/img/emptyCart.png"
+										alt="Product"
+									/>
+									<p className="empty-cart-note">
+										Your Cart Is Empty
+									</p>
+									<Link
+										className="empty-cart-shopping"
+										to="/"
+									>
+										Go Back
+									</Link>
+								</div>
+								{/* Your cart is empty <Link to="/"> Go Back</Link> */}
 							</div>
 						) : (
 							cartItems.map(item => (

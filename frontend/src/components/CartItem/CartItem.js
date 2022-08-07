@@ -21,7 +21,7 @@ const CartItem = ({ item, qtyChangeHandler, removeHandler, id_user }) => {
 					qtyChangeHandler(id_user, item._id, e.target.value)
 				}
 			>
-				{[...Array(item.quantity).keys()].map(x => (
+				{[...Array(10).keys()].map(x => (
 					<option key={x + 1} value={x + 1}>
 						{x + 1}
 					</option>

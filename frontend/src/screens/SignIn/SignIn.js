@@ -59,7 +59,7 @@ const SignIn = props => {
 				<form
 					className={classes.form}
 					noValidate
-					onSubmit={submitHandler}
+					onSubmit={e => submitHandler(e)}
 				>
 					{error && <MessageBox variant="danger">{error}</MessageBox>}
 					<TextField
@@ -105,7 +105,7 @@ const SignIn = props => {
 					<Grid container>
 						<Grid item xs>
 							<Link
-								to='/'
+								to="/reset"
 								variant="body2"
 								className={classes.link}
 							>
