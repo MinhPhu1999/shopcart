@@ -1,6 +1,8 @@
-import './SideDrawer.css';
+import { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
+import './SideDrawer.css';
 
 const SideDrawer = ({ show, click }) => {
 	const sideDrawerClass = ['sidedrawer'];
@@ -9,15 +11,16 @@ const SideDrawer = ({ show, click }) => {
 		sideDrawerClass.push('show');
 	}
 
-	const cart = useSelector(state => state.cartGet);
-	const { cartItems } = cart;
+	const { cartItems } = useSelector(state => state.cartGet);
 
-	const getCartCount = () => {
-		return cartItems?.reduce(
-			(quantity, item) => quantity + Number(item.quantity),
-			0,
-		);
-	};
+	const itemsInCart = useMemo(
+		() =>
+			cartItems?.reduce(
+				(quantity, item) => quantity + Number(item.quantity),
+				0,
+			),
+		[cartItems],
+	);
 
 	return (
 		<div className={sideDrawerClass.join(' ')}>
@@ -29,7 +32,7 @@ const SideDrawer = ({ show, click }) => {
 							Cart{' '}
 							{cartItems?.lenght > 0 && (
 								<span className="sidedrawer__cartbadge">
-									{getCartCount()}
+									{itemsInCart}
 								</span>
 							)}
 						</span>
@@ -43,4 +46,4 @@ const SideDrawer = ({ show, click }) => {
 	);
 };
 
-export default SideDrawer;
+export default memo(SideDrawer);

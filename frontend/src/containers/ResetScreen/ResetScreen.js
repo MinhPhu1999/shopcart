@@ -14,10 +14,10 @@ import {
 } from '@material-ui/core';
 import { LockOpenOutlined } from '@material-ui/icons';
 
-import Reset from '../../components/ResetPassword/Reset';
-import SendOk from '../../components/ResetPassword/SendOk';
+import Reset from 'components/ResetPassword/Reset';
+import SendOk from 'components/ResetPassword/SendOk';
 
-import useStyles from '../../components/Config/Account/useStyles';
+import useStyles from 'config/useStyles';
 
 export default function ResetScreen() {
 	const classes = useStyles();
@@ -40,7 +40,7 @@ export default function ResetScreen() {
 	};
 
 	return send ? (
-		<SendOk email={email}/>
+		<SendOk email={email} />
 	) : (
 		<Reset
 			disable={disable}

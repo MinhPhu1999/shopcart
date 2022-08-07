@@ -53,6 +53,12 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		justifyContent: 'center',
 	},
+	modal: {
+		color: theme.palette.common.white,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
 }));
 
 export default useStyles;

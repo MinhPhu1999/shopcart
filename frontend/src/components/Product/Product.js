@@ -1,5 +1,8 @@
-import './Product.css';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
+
+import './Product.css';
+
 const Product = ({ imageUrl, name, price, description, productId }) => {
 	return (
 		<div className="product">
@@ -20,4 +23,4 @@ const Product = ({ imageUrl, name, price, description, productId }) => {
 	);
 };
 
-export default Product;
+export default memo(Product);

@@ -1,14 +1,15 @@
-import './HomeScreen.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Pagination } from '@material-ui/lab';
 
-//Componts
-import Product from '../../components/Product/Product';
-import LoadingBackdrop from '../../components/Config/LoadingBackdrop/LoadingBackdrop';
+//Components
+import Product from 'components/Product/Product';
+import LoadingBackdrop from 'components/LoadingBackdrop/LoadingBackdrop';
 
 //Actions
-import { getProducts as listProducts } from '../../redux/actions/productActions';
+import { getProducts as listProducts } from 'redux/actions/productActions';
+
+import './HomeScreen.css';
 
 const HomeScreen = () => {
 	const dispatch = useDispatch();
@@ -60,4 +61,4 @@ const HomeScreen = () => {
 	);
 };
 
-export default HomeScreen;
+export default memo(HomeScreen);

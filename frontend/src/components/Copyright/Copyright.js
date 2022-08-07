@@ -1,6 +1,6 @@
 import { Typography } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import useStyles from '../Account/useStyles';
+import useStyles from 'config/useStyles';
 
 export default function Copyright() {
 	const classes = useStyles();

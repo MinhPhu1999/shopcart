@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -18,9 +18,9 @@ import CardContent from '@material-ui/core/CardContent';
 import { LockOpenOutlined } from '@material-ui/icons';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
 
-import useStyles from '../../components/Config/Account/useStyles';
+import useStyles from 'config/useStyles';
 
-export default function SendOk({ email }) {
+function SendOk({ email }) {
 	const classes = useStyles();
 	const [disable, setDisable] = useState(true);
 
@@ -60,7 +60,7 @@ export default function SendOk({ email }) {
 					</CardContent>
 					<CardActions>
 						<Button
-                            href="/"
+							href="/"
 							type="submit"
 							fullWidth
 							variant="contained"
@@ -75,3 +75,5 @@ export default function SendOk({ email }) {
 		</Container>
 	);
 }
+
+export default memo(SendOk);

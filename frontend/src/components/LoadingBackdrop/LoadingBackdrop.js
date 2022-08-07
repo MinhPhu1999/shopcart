@@ -1,19 +1,7 @@
-import {
-	Backdrop,
-	CircularProgress,
-	Fade,
-	makeStyles,
-	Modal,
-} from '@material-ui/core';
+import { memo } from 'react';
+import { Backdrop, CircularProgress, Fade, Modal } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
-	madal: {
-		color: theme.palette.common.white,
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-}));
+import useStyles from 'config/useStyles';
 
 const LoadingBackdrop = props => {
 	const classes = useStyles();
@@ -34,4 +22,4 @@ const LoadingBackdrop = props => {
 	);
 };
 
-export default LoadingBackdrop;
+export default memo(LoadingBackdrop);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
@@ -15,9 +15,9 @@ import {
 import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import { toast } from 'react-toastify';
 
-import MessageBox from '../../components/Config/MessageBox/MessageBox';
-import useStyles from '../../components/Config/Account/useStyles';
-import { login } from '../../redux/actions/userActions';
+import MessageBox from 'components/MessageBox/MessageBox';
+import useStyles from 'config/useStyles';
+import { login } from 'redux/actions/userActions';
 
 const SignIn = props => {
 	const classes = useStyles();
@@ -132,4 +132,4 @@ const SignIn = props => {
 	);
 };
 
-export default SignIn;
+export default memo(SignIn);

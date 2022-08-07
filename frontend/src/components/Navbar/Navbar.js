@@ -1,28 +1,30 @@
-import './Navbar.css';
-import { useState } from 'react';
+import { useState, memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Menu, MenuItem } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
-import { logout } from '../../redux/actions/userActions';
+
+// Actions
+import { logout } from 'redux/actions/userActions';
+
+import './Navbar.css';
 
 const Navbar = ({ click }) => {
-	const cart = useSelector(state => state.cartGet);
-	const { cartItems } = cart;
-
-	const userLogin = useSelector(state => state.userLogin);
-	const { userInfo } = userLogin;
-
 	const [anchorEl, setAnchorEl] = useState(null);
+
+	const { cartItems } = useSelector(state => state.cartGet);
+	const { userInfo } = useSelector(state => state.userLogin);
 
 	const dispatch = useDispatch();
 
-	const getCartCount = () => {
-		return cartItems?.reduce(
-			(quantity, item) => quantity + Number(item.quantity),
-			0,
-		);
-	};
+	const itemsInCart = useMemo(
+		() =>
+			cartItems?.reduce(
+				(quantity, item) => quantity + Number(item.quantity),
+				0,
+			),
+		[cartItems],
+	);
 
 	const openMenu = event => {
 		setAnchorEl(event.currentTarget);
@@ -55,7 +57,7 @@ const Navbar = ({ click }) => {
 									Cart
 									{cartItems?.length > 0 && (
 										<span className="cartlogo__badge">
-											{getCartCount()}
+											{itemsInCart}
 										</span>
 									)}
 								</span>
@@ -95,22 +97,6 @@ const Navbar = ({ click }) => {
 										</span>
 									</Link>
 								</MenuItem>
-								{/* <MenuItem>
-									<Link to="/" className="logout-link">
-										<span className="logout">
-											<ExitToApp className="logout-icon" />
-											Log Out
-										</span>
-									</Link>
-								</MenuItem>
-								<MenuItem>
-									<Link to="/" className="logout-link">
-										<span className="logout">
-											<ExitToApp className="logout-icon" />
-											Log Out
-										</span>
-									</Link>
-								</MenuItem> */}
 							</Menu>
 						</li>
 					</ul>
@@ -136,4 +122,4 @@ const Navbar = ({ click }) => {
 	);
 };
 
-export default Navbar;
+export default memo(Navbar);

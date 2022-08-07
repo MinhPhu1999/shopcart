@@ -1,5 +1,7 @@
-import './CartItem.css';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
+
+import './CartItem.css';
 
 const CartItem = ({ item, qtyChangeHandler, removeHandler, id_user }) => {
 	return (
@@ -38,4 +40,4 @@ const CartItem = ({ item, qtyChangeHandler, removeHandler, id_user }) => {
 	);
 };
 
-export default CartItem;
+export default memo(CartItem);

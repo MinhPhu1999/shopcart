@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
 import { toast } from 'react-toastify';
 import {
 	Avatar,
@@ -14,9 +13,9 @@ import {
 } from '@material-ui/core';
 import { LockOpenOutlined } from '@material-ui/icons';
 
-import useStyles from '../../components/Config/Account/useStyles';
+import useStyles from 'config/useStyles';
 
-export default function Reset({ disable, handleChangeEmail, submitHandler }) {
+function Reset({ disable, handleChangeEmail, submitHandler }) {
 	const classes = useStyles();
 	// const [disable, setDisable] = useState(true);
 
@@ -68,3 +67,5 @@ export default function Reset({ disable, handleChangeEmail, submitHandler }) {
 		</Container>
 	);
 }
+
+export default memo(Reset);

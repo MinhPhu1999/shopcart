@@ -1,9 +1,10 @@
+import { memo } from 'react';
 import { AppBar, Container, Toolbar } from '@material-ui/core';
 
-import Copyright from '../Config/Copyright/Copyright';
-import useStyles from '../Config/Account/useStyles';
+import Copyright from '../Copyright/Copyright';
+import useStyles from 'config/useStyles';
 
-export default function Footer() {
+function Footer() {
 	const classes = useStyles();
 
 	return (
@@ -16,3 +17,5 @@ export default function Footer() {
 		</AppBar>
 	);
 }
+
+export default memo(Footer);

@@ -1,24 +1,22 @@
-import './CartScreen.css';
+import { memo, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 //Components
-import CartItem from '../../components/CartItem/CartItem';
+import CartItem from 'components/CartItem/CartItem';
+import LoadingBackdrop from 'components/LoadingBackdrop/LoadingBackdrop';
 
 //Actions
+import { removeCart, changeQty } from 'redux/actions/cartActions';
 
-import { removeCart, changeQty } from '../../redux/actions/cartActions';
-
-import LoadingBackdrop from '../../components/Config/LoadingBackdrop/LoadingBackdrop';
+import './CartScreen.css';
 
 const CartScreen = ({ match }) => {
 	const dispatch = useDispatch();
 
-	const cart = useSelector(state => state.cartGet);
-	const { cartItems, loading } = cart;
+	const { cartItems, loading } = useSelector(state => state.cartGet);
 
-	const userLogin = useSelector(state => state.userLogin);
-	const { userInfo } = userLogin;
+	const { userInfo } = useSelector(state => state.userLogin);
 
 	const qtyChangeHandler = (id_user, id, quantity) => {
 		dispatch(changeQty(id_user, id, quantity));
@@ -28,18 +26,22 @@ const CartScreen = ({ match }) => {
 		dispatch(removeCart(id_user, id));
 	};
 
-	const getCartCount = () => {
-		return cartItems?.reduce(
-			(quantity, item) => Number(item.quantity) + quantity,
-			0,
-		);
-	};
+	const itemsInCart = useMemo(
+		() =>
+			cartItems?.reduce(
+				(quantity, item) => quantity + Number(item.quantity),
+				0,
+			),
+		[cartItems],
+	);
 
-	const getCartSubTotal = () => {
-		return cartItems
-			?.reduce((price, item) => price + item.price * item.quantity, 0)
-			.toFixed(2);
-	};
+	const cartSubTotal = useMemo(
+		() =>
+			cartItems
+				?.reduce((price, item) => price + item.price * item.quantity, 0)
+				.toFixed(2),
+		[cartItems],
+	);
 
 	return (
 		<div>
@@ -86,8 +88,8 @@ const CartScreen = ({ match }) => {
 					</div>
 					<div className="cartscreen__right">
 						<div className="cartscreen__info">
-							<p>Subtotal ({getCartCount()}) items</p>
-							<p>${getCartSubTotal()}</p>
+							<p>Subtotal ({itemsInCart}) items</p>
+							<p>${cartSubTotal}</p>
 						</div>
 						<div>
 							<button>Proceed To Checkout</button>
@@ -99,4 +101,4 @@ const CartScreen = ({ match }) => {
 	);
 };
 
-export default CartScreen;
+export default memo(CartScreen);

@@ -18,7 +18,7 @@ const registerAcount = async (req, res) => {
 			res.status(200).json({ message: 'Register success' });
 		});
 	} catch {
-		res.status(500).json({ message: 'Register failure' });
+		res.status(500).json({ message: 'Register failure in catch' });
 	}
 };
 

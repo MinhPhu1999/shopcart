@@ -3,21 +3,21 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Component
-import LoadingBackdrop from '../../components/Config/LoadingBackdrop/LoadingBackdrop';
+import LoadingBackdrop from 'components/LoadingBackdrop/LoadingBackdrop';
 
 //Actions
-import { getProductDetails } from '../../redux/actions/productActions';
-import { addCart } from '../../redux/actions/cartActions';
+import { getProductDetails } from 'redux/actions/productActions';
+import { addCart } from 'redux/actions/cartActions';
 
 const ProductScreen = ({ match, history }) => {
 	const [quantity, setQuantity] = useState(1);
 	const dispatch = useDispatch();
-	const productDetails = useSelector(state => state.getProductDetails);
 
-	const { loading, error, product } = productDetails;
+	const { loading, error, product } = useSelector(
+		state => state.getProductDetails,
+	);
 
-	const userLogin = useSelector(state => state.userLogin);
-	const { userInfo } = userLogin;
+	const { userInfo } = useSelector(state => state.userLogin);
 
 	useEffect(() => {
 		if (product && match.params.id !== product?._id) {
