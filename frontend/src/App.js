@@ -17,6 +17,9 @@ import SideDrawer from 'components/SideDrawer/SideDrawer';
 import Footer from 'components/Footer/Footer';
 import NotFound from 'components/NotFound/NotFound';
 
+// Private Route
+import PrivateRoute from 'config/Private/PrivateRoute';
+
 import './App.css';
 
 function App() {
@@ -37,7 +40,7 @@ function App() {
 						path="/product/:id"
 						component={ProductScreen}
 					/>
-					<Route exact path="/cart" component={CartScreen} />
+					<PrivateRoute exact path="/cart" component={CartScreen} />
 					<Route exact path="/reset" component={ResetScreen} />
 					<Route path="*" exact component={NotFound} />
 				</Switch>

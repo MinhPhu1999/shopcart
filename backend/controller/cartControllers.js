@@ -1,9 +1,12 @@
+const isEmpty = require('lodash/isEmpty');
 const Cart = require('../models/Cart');
 
 const addCart = async (req, res) => {
 	try {
 		const { id_user, products } = req.body;
 		const { price, quantity } = products;
+
+		console.log('addCart', req.body);
 
 		let cartF = null;
 		cartF = await Cart.findOne({ id_user: id_user });
@@ -45,10 +48,10 @@ const getCart = async (req, res) => {
 	try {
 		const data = await Cart.findOne({ id_user: req.params.id_user });
 
-		if (data) {
+		if (!isEmpty(data)) {
 			return res.json(data.products);
 		}
-		res.json({ message: 'Fail' });
+		res.json([]);
 	} catch (err) {
 		res.json({ message: 'Fail 2' });
 	}

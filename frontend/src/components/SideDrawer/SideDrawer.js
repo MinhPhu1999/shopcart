@@ -2,6 +2,9 @@ import { memo, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+// Helpers
+import { totalItems } from 'helpers';
+
 import './SideDrawer.css';
 
 const SideDrawer = ({ show, click }) => {
@@ -13,14 +16,7 @@ const SideDrawer = ({ show, click }) => {
 
 	const { cartItems } = useSelector(state => state.cartGet);
 
-	const itemsInCart = useMemo(
-		() =>
-			cartItems?.reduce(
-				(quantity, item) => quantity + Number(item.quantity),
-				0,
-			),
-		[cartItems],
-	);
+	const itemsInCart = useMemo(() => totalItems(cartItems), [cartItems]);
 
 	return (
 		<div className={sideDrawerClass.join(' ')}>

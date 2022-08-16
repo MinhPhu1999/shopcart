@@ -7,6 +7,9 @@ import { ExitToApp } from '@material-ui/icons';
 // Actions
 import { logout } from 'redux/actions/userActions';
 
+// Helpers
+import { totalItems } from 'helpers';
+
 import './Navbar.css';
 
 const Navbar = ({ click }) => {
@@ -17,14 +20,7 @@ const Navbar = ({ click }) => {
 
 	const dispatch = useDispatch();
 
-	const itemsInCart = useMemo(
-		() =>
-			cartItems?.reduce(
-				(quantity, item) => quantity + Number(item.quantity),
-				0,
-			),
-		[cartItems],
-	);
+	const itemsInCart = useMemo(() => totalItems(cartItems), [cartItems]);
 
 	const openMenu = event => {
 		setAnchorEl(event.currentTarget);

@@ -25,7 +25,7 @@ const SignIn = props => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const userLogin = useSelector(state => state.userLogin);
-	const { loading, userInfo, error } = userLogin;
+	const { userInfo, error } = userLogin;
 	const dispatch = useDispatch();
 
 	const redirect = props.location.serach

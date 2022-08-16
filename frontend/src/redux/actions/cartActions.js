@@ -4,7 +4,6 @@ import {
 	CART_ADD_POST_FAIL,
 	CART_ADD_POST_SUCCESS,
 	CART_ADD_POST_REQUEST,
-	CART_EMPTY,
 	CART_LIST_FAIL,
 	CART_LIST_SUCCESS,
 	CART_LIST_REQUEST,
@@ -40,11 +39,6 @@ const getCart = id_user => async (dispatch, getState) => {
 		const { data } = await axios.get('/api/cart/' + id_user);
 
 		dispatch({ type: CART_LIST_SUCCESS, payload: data });
-
-		const {
-			cartGet: { cartItems },
-		} = getState();
-		Cookie.set('cartItems', JSON.stringify(cartItems));
 	} catch (error) {
 		const message =
 			error.response && error.response.data.message

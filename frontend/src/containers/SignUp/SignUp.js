@@ -29,20 +29,16 @@ export default function SignUp(props) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [phone, setPhone] = useState('');
-	const userRegister = useSelector(state => state.userRegister);
-	const { loading, userInfo, error } = userRegister;
-	const dispatch = useDispatch();
-	const redirect = props.location.serach
-		? props.location.serach.split('=')[1]
-		: '/signin';
 
-	useEffect(() => {
-		if (userInfo) {
-			props.history.push(redirect);
-			toast.success('Register is successfully');
-		}
-		return () => {};
-	}, [userInfo]);
+	const { error } = useSelector(state => state.userRegister);
+
+	const { userInfo } = useSelector(state => state.userLogin);
+
+	const dispatch = useDispatch();
+
+	if (userInfo) {
+		props.history.push('/');
+	}
 
 	const handlePhoneChange = value => {
 		if (value) {

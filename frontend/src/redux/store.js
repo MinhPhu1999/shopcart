@@ -31,11 +31,10 @@ const reducer = combineReducers({
 
 const middleware = [thunk];
 
-const cartItems = Cookie.getJSON('cartItems') || [];
 const userInfo = Cookie.getJSON('userInfo') || null;
 
 const INITIAL_STATE = {
-	cartGet: { cartItems },
+	// cartGet: { cartItems },
 	userLogin: { userInfo },
 };
 

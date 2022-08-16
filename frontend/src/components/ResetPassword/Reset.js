@@ -23,6 +23,10 @@ function Reset({ disable, handleChangeEmail, submitHandler }) {
 	// 	e.target.value ? setDisable(false) : setDisable(true);
 	// };
 
+	const handleChangeEmailInput = e => {
+		handleChangeEmail(e);
+	};
+
 	return (
 		<Container component="main" maxWidth="xs">
 			<CssBaseline />
@@ -48,7 +52,7 @@ function Reset({ disable, handleChangeEmail, submitHandler }) {
 								name="email"
 								label="Email Address"
 								autoComplete="email"
-								onInput={e => handleChangeEmail(e)}
+								onInput={handleChangeEmailInput}
 							/>
 						</Grid>
 					</Grid>

@@ -32,7 +32,7 @@
 
 .cartscreen__right div button {
 	font-size: 18px;
-    border-radius: 20px;
+	border-radius: 20px;
 	padding: 10px 17px;
 	width: 100%;
 	background: #171717;
@@ -43,30 +43,6 @@
 
 .cartscreen__right div button:hover {
 	opacity: 0.9;
-}
-
-.empty-cart {
-	text-align: center;
-}
-
-.empty-cart .empty-cart-img {
-	width: 190px;
-	height: 190px;
-}
-
-.empty-cart .empty-cart-note {
-	font-size: 18px;
-	margin-bottom: 10px;
-}
-
-.empty-cart .empty-cart-shopping {
-	text-decoration: none;
-	border-radius: 10px;
-	color: #fff;
-	font-size: 18px;
-	line-height: 22px;
-	background-color: #3f51b5;
-	padding: 6px;
 }
 
 @media (max-width: 1320px) {

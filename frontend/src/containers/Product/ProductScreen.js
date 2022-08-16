@@ -1,6 +1,6 @@
-import './ProductScreen.css';
-import { useState, useEffect } from 'react';
+import { memo, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 // Component
 import LoadingBackdrop from 'components/LoadingBackdrop/LoadingBackdrop';
@@ -9,68 +9,64 @@ import LoadingBackdrop from 'components/LoadingBackdrop/LoadingBackdrop';
 import { getProductDetails } from 'redux/actions/productActions';
 import { addCart } from 'redux/actions/cartActions';
 
-const ProductScreen = ({ match, history }) => {
-	const [quantity, setQuantity] = useState(1);
+import './ProductScreen.css';
+
+const ProductScreen = () => {
+	const { id } = useParams();
+
 	const dispatch = useDispatch();
+
+	const [quantity, setQuantity] = useState(1);
 
 	const { loading, error, product } = useSelector(
 		state => state.getProductDetails,
 	);
-
 	const { userInfo } = useSelector(state => state.userLogin);
 
 	useEffect(() => {
-		if (product && match.params.id !== product?._id) {
-			dispatch(getProductDetails(match.params.id));
-		}
-	}, [dispatch, product, match]);
+		dispatch(getProductDetails(id));
+	}, [dispatch, id]);
 
-	const addToCartHandler = (_id, name, price, imageUrl, quantity) => {
-		if (!userInfo) {
-			history.push('/signin');
-		} else {
-			let products = {
-				_id: _id,
-				name: name,
-				price: price,
-				imageUrl: imageUrl,
-				quantity: quantity,
-			};
-			dispatch(addCart(userInfo.data.user._id, products));
-		}
+	const addToCartHandler = () => {
+		dispatch(addCart(userInfo.data.user._id, { ...product, quantity }));
 	};
+
+	const handleChangeQty = e => {
+		setQuantity(Number(e.target.value));
+	};
+
+	if (loading) {
+		return <LoadingBackdrop open={loading} />;
+	}
+
+	const { price, name, imageUrl, countInStock, description } = product;
 
 	return (
 		<div className="productscreen">
-			{loading ? (
-				<>
-					<LoadingBackdrop open={loading} />
-					<div style={{ height: '180px' }}></div>
-				</>
-			) : error ? (
+			{error ? (
 				<h2>{error}</h2>
 			) : (
 				<>
 					<div className="productscreen__left">
 						<div className="left__image">
-							<img src={product?.imageUrl} alt={product?.name} />
+							<img src={imageUrl} alt={name} />
 						</div>
 
 						<div className="left__info">
-							<p className="left__name">{product?.name}</p>
-							<p>Price: ${product?.price}</p>
-							<p>Description: {product?.description}</p>
+							<p className="left__name">{name}</p>
+							<p>Price: ${price}</p>
+							<p>Description: {description}</p>
 						</div>
 					</div>
 					<div className="productscreen__right">
 						<div className="right__info">
 							<p>
-								Price: <span>${product?.price}</span>
+								Price: <span>${price}</span>
 							</p>
 							<p>
 								Status:{' '}
 								<span>
-									{product?.countInStock > 0
+									{countInStock > 0
 										? 'In Stock'
 										: 'Out of Stock'}
 								</span>
@@ -79,11 +75,9 @@ const ProductScreen = ({ match, history }) => {
 								Qty
 								<select
 									value={quantity}
-									onChange={e => setQuantity(e.target.value)}
+									onChange={handleChangeQty}
 								>
-									{[
-										...Array(product?.countInStock).keys(),
-									].map(x => (
+									{[...Array(countInStock).keys()].map(x => (
 										<option key={x + 1} value={x + 1}>
 											{x + 1}
 										</option>
@@ -93,15 +87,7 @@ const ProductScreen = ({ match, history }) => {
 							<p>
 								<button
 									type="button"
-									onClick={() =>
-										addToCartHandler(
-											product._id,
-											product.name,
-											product.price,
-											product.imageUrl,
-											quantity,
-										)
-									}
+									onClick={addToCartHandler}
 								>
 									Add To Cart
 								</button>
@@ -114,4 +100,4 @@ const ProductScreen = ({ match, history }) => {
 	);
 };
 
-export default ProductScreen;
+export default memo(ProductScreen);

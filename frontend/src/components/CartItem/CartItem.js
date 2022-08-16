@@ -3,7 +3,15 @@ import { Link } from 'react-router-dom';
 
 import './CartItem.css';
 
-const CartItem = ({ item, qtyChangeHandler, removeHandler, id_user }) => {
+const CartItem = ({ item, qtyChangeHandler, removeHandler }) => {
+	const handleQtyChange = e => {
+		qtyChangeHandler(item._id, e.target.value);
+	};
+
+	const handleRemoveCartItem = () => {
+		removeHandler(item._id);
+	};
+
 	return (
 		<div className="cartitem">
 			<div className="cartitem__image">
@@ -19,9 +27,7 @@ const CartItem = ({ item, qtyChangeHandler, removeHandler, id_user }) => {
 			<select
 				className="cartitem__select"
 				value={item.quantity}
-				onChange={e =>
-					qtyChangeHandler(id_user, item._id, e.target.value)
-				}
+				onChange={handleQtyChange}
 			>
 				{[...Array(10).keys()].map(x => (
 					<option key={x + 1} value={x + 1}>
@@ -32,7 +38,7 @@ const CartItem = ({ item, qtyChangeHandler, removeHandler, id_user }) => {
 
 			<button
 				className="cartitem__deleteBtn"
-				onClick={() => removeHandler(id_user, item._id)}
+				onClick={handleRemoveCartItem}
 			>
 				<i className="fas fa-trash"></i>
 			</button>

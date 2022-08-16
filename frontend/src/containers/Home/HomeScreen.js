@@ -22,20 +22,19 @@ const HomeScreen = () => {
 		dispatch(listProducts(pageNumber, 4));
 	}, [dispatch, pageNumber]);
 
-	const handleChange = (event, value) => {
+	const handleChange = (_, value) => {
 		setPageNumber(value);
 	};
+
+	if (loading) {
+		return <LoadingBackdrop open={loading} />;
+	}
 
 	return (
 		<div className="homescreen">
 			<h2 className="homescreen__title">Latest Product</h2>
 			<div className="homescreen_products">
-				{loading ? (
-					<>
-						<LoadingBackdrop open={loading} />
-						<div style={{ height: '180px' }}></div>
-					</>
-				) : error ? (
+				{error ? (
 					<h2>{error}</h2>
 				) : (
 					products.map(product => (

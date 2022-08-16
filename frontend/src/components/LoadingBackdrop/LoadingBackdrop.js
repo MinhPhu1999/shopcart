@@ -8,7 +8,7 @@ const LoadingBackdrop = props => {
 
 	return (
 		<Modal
-			className={classes.madal}
+			className={classes.modal}
 			open={props.open}
 			BackdropComponent={Backdrop}
 			BackdropProps={{

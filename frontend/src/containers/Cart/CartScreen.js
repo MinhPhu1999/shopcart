@@ -1,102 +1,73 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-
+import isEmpty from 'lodash/isEmpty';
 //Components
 import CartItem from 'components/CartItem/CartItem';
+import CartEmpty from 'components/CartEmpty/CartEmpty';
 import LoadingBackdrop from 'components/LoadingBackdrop/LoadingBackdrop';
 
 //Actions
-import { removeCart, changeQty } from 'redux/actions/cartActions';
+import { removeCart, changeQty, getCart } from 'redux/actions/cartActions';
+
+// Helpers
+import { totalItems, totalPriceOfItems } from 'helpers';
 
 import './CartScreen.css';
 
-const CartScreen = ({ match }) => {
+const CartScreen = () => {
 	const dispatch = useDispatch();
 
 	const { cartItems, loading } = useSelector(state => state.cartGet);
 
 	const { userInfo } = useSelector(state => state.userLogin);
 
-	const qtyChangeHandler = (id_user, id, quantity) => {
-		dispatch(changeQty(id_user, id, quantity));
-	};
-
-	const removeHandler = (id_user, id) => {
-		dispatch(removeCart(id_user, id));
-	};
-
-	const itemsInCart = useMemo(
-		() =>
-			cartItems?.reduce(
-				(quantity, item) => quantity + Number(item.quantity),
-				0,
-			),
-		[cartItems],
-	);
-
+	const itemsInCart = useMemo(() => totalItems(cartItems), [cartItems]);
 	const cartSubTotal = useMemo(
-		() =>
-			cartItems
-				?.reduce((price, item) => price + item.price * item.quantity, 0)
-				.toFixed(2),
+		() => totalPriceOfItems(cartItems),
 		[cartItems],
 	);
+
+	const qtyChangeHandler = (id, quantity) => {
+		dispatch(changeQty(userInfo.data.user._id, id, quantity));
+	};
+
+	const removeHandler = id => {
+		dispatch(removeCart(userInfo.data.user._id, id));
+	};
+
+	useEffect(() => {
+		dispatch(getCart(userInfo.data.user._id));
+	}, [dispatch, userInfo]);
+
+	if (loading) {
+		return <LoadingBackdrop open={loading} />;
+	}
 
 	return (
-		<div>
-			{loading ? (
-				<>
-					<LoadingBackdrop open={loading} />
-					<div style={{ height: '180px' }}></div>
-				</>
-			) : (
-				<div className="cartscreen">
-					<div className="cartscreen__left">
-						{/* <h2>Shoppong Cart</h2> */}
-						{cartItems.length === 0 || cartItems === undefined ? (
-							<div>
-								<div className="empty-cart">
-									<img
-										className="empty-cart-img"
-										src="/img/emptyCart.png"
-										alt="Product"
-									/>
-									<p className="empty-cart-note">
-										Your Cart Is Empty
-									</p>
-									<Link
-										className="empty-cart-shopping"
-										to="/"
-									>
-										Go Back
-									</Link>
-								</div>
-								{/* Your cart is empty <Link to="/"> Go Back</Link> */}
-							</div>
-						) : (
-							cartItems.map(item => (
-								<CartItem
-									key={item.products}
-									item={item}
-									qtyChangeHandler={qtyChangeHandler}
-									removeHandler={removeHandler}
-									id_user={userInfo.data.user._id}
-								/>
-							))
-						)}
-					</div>
-					<div className="cartscreen__right">
-						<div className="cartscreen__info">
-							<p>Subtotal ({itemsInCart}) items</p>
-							<p>${cartSubTotal}</p>
-						</div>
-						<div>
-							<button>Proceed To Checkout</button>
-						</div>
-					</div>
+		<div className="cartscreen">
+			<div className="cartscreen__left">
+				{isEmpty(cartItems) ? (
+					<CartEmpty />
+				) : (
+					cartItems.map(item => (
+						<CartItem
+							key={item._id}
+							item={item}
+							qtyChangeHandler={qtyChangeHandler}
+							removeHandler={removeHandler}
+						/>
+					))
+				)}
+			</div>
+			<div className="cartscreen__right">
+				<div className="cartscreen__info">
+					<p>Subtotal ({itemsInCart}) item(s)</p>
+					<p>${cartSubTotal}</p>
 				</div>
-			)}
+				<div>
+					<button>Proceed To Checkout</button>
+				</div>
+			</div>
 		</div>
 	);
 };
