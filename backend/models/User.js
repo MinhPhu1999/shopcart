@@ -18,9 +18,6 @@ const userSchema = new mongoose.Schema({
 	password: {
 		type: String,
 	},
-	otp: {
-		type: String,
-	},
 });
 
 module.exports = mongoose.model('user', userSchema);

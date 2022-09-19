@@ -28,7 +28,7 @@ const ProductScreen = () => {
 	}, [dispatch, id]);
 
 	const addToCartHandler = () => {
-		dispatch(addCart(userInfo.data.user._id, { ...product, quantity }));
+		dispatch(addCart(userInfo.user._id, { ...product, quantity }));
 	};
 
 	const handleChangeQty = e => {

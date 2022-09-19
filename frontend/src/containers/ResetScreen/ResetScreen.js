@@ -17,10 +17,15 @@ import { LockOpenOutlined } from '@material-ui/icons';
 import Reset from 'components/ResetPassword/Reset';
 import SendOk from 'components/ResetPassword/SendOk';
 
+import { forgotPassword } from 'redux/actions/userActions';
+
 import useStyles from 'config/useStyles';
 
 export default function ResetScreen() {
 	const classes = useStyles();
+
+	const dispatch = useDispatch();
+
 	const [disable, setDisable] = useState(true);
 	const [send, setSend] = useState(false);
 	const [email, setEmail] = useState('');
@@ -37,6 +42,7 @@ export default function ResetScreen() {
 	const submitHandler = e => {
 		e.preventDefault();
 		setSend(true);
+		dispatch(forgotPassword(email));
 	};
 
 	return send ? (

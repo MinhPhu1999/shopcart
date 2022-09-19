@@ -28,15 +28,15 @@ const CartScreen = () => {
 	);
 
 	const qtyChangeHandler = (id, quantity) => {
-		dispatch(changeQty(userInfo.data.user._id, id, quantity));
+		dispatch(changeQty(userInfo.user._id, id, quantity));
 	};
 
 	const removeHandler = id => {
-		dispatch(removeCart(userInfo.data.user._id, id));
+		dispatch(removeCart(userInfo.user._id, id));
 	};
 
 	useEffect(() => {
-		dispatch(getCart(userInfo.data.user._id));
+		dispatch(getCart(userInfo.user._id));
 	}, [dispatch, userInfo]);
 
 	if (loading) {

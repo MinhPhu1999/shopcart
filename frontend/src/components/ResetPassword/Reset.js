@@ -17,6 +17,9 @@ import useStyles from 'config/useStyles';
 
 function Reset({ disable, handleChangeEmail, submitHandler }) {
 	const classes = useStyles();
+
+	const dispatch = useDispatch();
+
 	// const [disable, setDisable] = useState(true);
 
 	// const handleChangeEmail = e => {

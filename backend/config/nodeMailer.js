@@ -4,9 +4,9 @@ const adminEmail = process.env.ADMIN_EMAIL;
 const adminPassword = process.env.ADMIN_PASSWORD;
 
 const transporter = nodemailer.createTransport({
-	host: 'smtp.gmail.com',
-	port: 587,
-	secure: false,
+	// host: 'smtp.mailtrap.io',
+	// port: 2525,
+	// secure: false,
 	service: 'gmail',
 	auth: {
 		user: adminEmail,
@@ -14,20 +14,23 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
-exports.sendEmailForgotPassword = async (email, token) => {
+exports.sendEmailForgotPassword = async (email, otp) => {
 	let mailOptions = {
 		from: `SHOOPER 👻 <${adminEmail}>`, // sender address
 		to: email, // list of receivers
-		subject: 'Forgot password Verification Token', // Subject line
+		subject: 'Forgot password Verification Otp', // Subject line
 		html:
 			'<b>Forgot password</b>' +
 			' <br/>' +
 			'<span>Please enter OTP below</span>' +
 			'<br/>' +
 			'<span>' +
-			token +
+			otp +
 			'</span>',
 	};
+
+	console.log('email', email);
+
 	try {
 		let send = await transporter.sendMail(mailOptions);
 	} catch (err) {

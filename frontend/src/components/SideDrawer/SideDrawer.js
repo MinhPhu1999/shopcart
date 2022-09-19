@@ -1,22 +1,33 @@
-import { memo, useMemo } from 'react';
+import { memo, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 
 // Helpers
 import { totalItems } from 'helpers';
 
+// Actions
+import { getCart } from 'redux/actions/cartActions';
+
 import './SideDrawer.css';
 
 const SideDrawer = ({ show, click }) => {
+	const dispatch = useDispatch();
+
 	const sideDrawerClass = ['sidedrawer'];
 
 	if (show) {
 		sideDrawerClass.push('show');
 	}
 
+	const { userInfo } = useSelector(state => state.userLogin);
 	const { cartItems } = useSelector(state => state.cartGet);
 
 	const itemsInCart = useMemo(() => totalItems(cartItems), [cartItems]);
+
+	useEffect(() => {
+		dispatch(getCart(userInfo.user._id));
+	}, [dispatch, userInfo]);
 
 	return (
 		<div className={sideDrawerClass.join(' ')}>
@@ -25,8 +36,8 @@ const SideDrawer = ({ show, click }) => {
 					<Link to="/cart">
 						<i className="fas fa-shopping-cart"></i>
 						<span>
-							Cart{' '}
-							{cartItems?.lenght > 0 && (
+							Cart
+							{!isEmpty(cartItems) && (
 								<span className="sidedrawer__cartbadge">
 									{itemsInCart}
 								</span>
