@@ -172,7 +172,7 @@ const updateInfor = async (req, res) => {
 		return res.status(422).send({ message: 'Invalid data' });
 	}
 	//khai báo các biến cần thiết
-	const { email, firstName, lastName, id } = req.body;
+	const { email, firstName, lastName, id, password } = req.body;
 	let newUser = await User.findById(id);
 	//tìm kiếm user theo email
 	let userFind = await User.findOne({ email: email });
@@ -184,6 +184,7 @@ const updateInfor = async (req, res) => {
 	newUser.firstName = firstName;
 	newUser.lastName = lastName;
 	newUser.email = email;
+	newUser.password = bcrypt.hashSync(password, 10);
 	try {
 		await newUser.save(); //lưu các thay đổi
 	} catch (err) {

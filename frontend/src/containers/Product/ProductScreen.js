@@ -1,6 +1,7 @@
 import { memo, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import isEmpty from 'lodash/isEmpty';
 
 // Component
 import LoadingBackdrop from 'components/LoadingBackdrop/LoadingBackdrop';
@@ -11,7 +12,7 @@ import { addCart } from 'redux/actions/cartActions';
 
 import './ProductScreen.css';
 
-const ProductScreen = () => {
+const ProductScreen = ({ history }) => {
 	const { id } = useParams();
 
 	const dispatch = useDispatch();
@@ -28,7 +29,11 @@ const ProductScreen = () => {
 	}, [dispatch, id]);
 
 	const addToCartHandler = () => {
-		dispatch(addCart(userInfo.user._id, { ...product, quantity }));
+		if (isEmpty(userInfo)) {
+			history.push('/signin');
+		} else {
+			dispatch(addCart(userInfo?.user?._id, { ...product, quantity }));
+		}
 	};
 
 	const handleChangeQty = e => {

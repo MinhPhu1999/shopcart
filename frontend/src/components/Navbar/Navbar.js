@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Menu, MenuItem } from '@material-ui/core';
 import { ExitToApp } from '@material-ui/icons';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
-
+import isEmpty from 'lodash/isEmpty';
 // Actions
 import { logout } from 'redux/actions/userActions';
 import { getCart } from 'redux/actions/cartActions';
@@ -37,7 +37,9 @@ const Navbar = ({ click }) => {
 	};
 
 	useEffect(() => {
-		dispatch(getCart(userInfo.user._id));
+		if (!isEmpty(userInfo)) {
+			dispatch(getCart(userInfo?.user?._id));
+		}
 	}, [dispatch, userInfo]);
 
 	return (

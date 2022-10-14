@@ -26,7 +26,9 @@ const SideDrawer = ({ show, click }) => {
 	const itemsInCart = useMemo(() => totalItems(cartItems), [cartItems]);
 
 	useEffect(() => {
-		dispatch(getCart(userInfo.user._id));
+		if (!isEmpty(userInfo)) {
+			dispatch(getCart(userInfo.user._id));
+		}
 	}, [dispatch, userInfo]);
 
 	return (

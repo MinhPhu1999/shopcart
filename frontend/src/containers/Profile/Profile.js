@@ -17,6 +17,7 @@ function Profile(props) {
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
 
 	const userLogin = useSelector(state => state.userLogin);
 	const { userInfo } = userLogin;
@@ -30,8 +31,18 @@ function Profile(props) {
 		e.preventDefault();
 
 		dispatch(
-			updateUserProfile(email, firstName, lastName, userInfo?.user?._id),
+			updateUserProfile(
+				email,
+				firstName,
+				lastName,
+				password,
+				userInfo?.user?._id,
+			),
 		);
+	};
+
+	const handleChangePassword = e => {
+		setPassword(e.target.value);
 	};
 
 	const handleChangeEmail = e => {
@@ -122,6 +133,18 @@ function Profile(props) {
 							placeholder="Enter email"
 							value={email}
 							onChange={handleChangeEmail}
+						></input>
+					</div>
+					<div>
+						<label htmlFor="password">PassWord</label>
+						<input
+							id="password"
+							type="text"
+							placeholder="Enter New PassWord"
+							minLength="4"
+							maxLength="15"
+							value={password}
+							onChange={handleChangePassword}
 						></input>
 					</div>
 					<div>

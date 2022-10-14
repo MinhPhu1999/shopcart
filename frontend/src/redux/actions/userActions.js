@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Cookie from 'js-cookie';
+import isEmpty from 'lodash/isEmpty';
 import {
 	USER_REGISTER_FAIL,
 	USER_REGISTER_SUCCESS,
@@ -67,14 +68,15 @@ const login = (email, password) => async dispatch => {
 			password,
 		});
 
-		dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
-		Cookie.set('userInfo', JSON.stringify(data));
+		if (!isEmpty(data)) {
+			dispatch({ type: USER_SIGNIN_SUCCESS, payload: data });
+			Cookie.set('userInfo', JSON.stringify(data));
+		}
 	} catch (error) {
-		const message =
-			error.response && error.data.message
-				? error.response.data.message
-				: error.message;
-		dispatch({ type: USER_SIGNIN_FAIL, payload: message });
+		dispatch({
+			type: USER_SIGNIN_FAIL,
+			payload: 'PassWord or Email wrong',
+		});
 	}
 };
 
@@ -159,7 +161,7 @@ const detailUser = userId => async dispatch => {
 };
 
 const updateUserProfile =
-	(email, firstName, lastName, id) => async dispatch => {
+	(email, firstName, lastName, password, id) => async dispatch => {
 		dispatch({
 			type: USER_UPDATE_PROFILE_REQUEST,
 			payload: { email, firstName, lastName, id },
@@ -170,6 +172,7 @@ const updateUserProfile =
 				email,
 				firstName,
 				lastName,
+				password,
 				id,
 			});
 			//console.log(data);
