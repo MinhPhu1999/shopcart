@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import { toast } from 'react-toastify';
-
+import isEmpty from 'lodash/isEmpty';
 import MessageBox from 'components/MessageBox/MessageBox';
 import useStyles from 'config/useStyles';
 import { login } from 'redux/actions/userActions';
@@ -33,12 +33,18 @@ const SignIn = props => {
 		: '/';
 
 	useEffect(() => {
-		if (userInfo) {
+		if (!isEmpty(userInfo)) {
 			props.history.push(redirect);
 			toast.success('Login is successfully');
 		}
 		return () => {};
 	}, [props.history, redirect, userInfo]);
+
+	useEffect(() => {
+		if (error) {
+			toast.error(error);
+		}
+	}, [error]);
 
 	const submitHandler = e => {
 		e.preventDefault();
@@ -61,7 +67,7 @@ const SignIn = props => {
 					noValidate
 					onSubmit={e => submitHandler(e)}
 				>
-					{error && <MessageBox variant="danger">{error}</MessageBox>}
+					{/* {error && <MessageBox variant="danger">{error}</MessageBox>} */}
 					<TextField
 						variant="outlined"
 						margin="nomal"

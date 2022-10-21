@@ -40,8 +40,11 @@ const register =
 					password,
 				})
 				.then(data => {
-					dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
-					Cookie.set('userInfo', JSON.stringify(data));
+					dispatch({
+						type: USER_REGISTER_SUCCESS,
+						payload: data.data,
+					});
+					// Cookie.set('userInfo', JSON.stringify(data));
 				})
 				.catch(error => {
 					if (error.response) {

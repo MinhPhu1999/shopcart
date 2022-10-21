@@ -27,18 +27,33 @@ function Profile(props) {
 	const userUpdateProfile = useSelector(state => state.userUpdateProfile);
 	const { error: errorUpdate, success } = userUpdateProfile;
 
-	const submitHandler = e => {
-		e.preventDefault();
-
-		dispatch(
-			updateUserProfile(
-				email,
-				firstName,
-				lastName,
-				password,
-				userInfo?.user?._id,
-			),
+	const isValidEmail = email => {
+		return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+			email,
 		);
+	};
+
+	const submitHandler = e => {
+		console.log('email', email);
+		console.log(' isValidEmail(email)', isValidEmail(email));
+		e.preventDefault();
+		if (firstName.trim().length < 2 || lastName.trim().length < 2) {
+			toast.error('Firstname and Lastname must be at least 2 characters');
+		} else if (email.trim().length < 6 || !isValidEmail(email)) {
+			toast.error('Email wrong');
+		} else if (password.trim().length < 6) {
+			toast.error('password must be at least 6 characters');
+		} else {
+			dispatch(
+				updateUserProfile(
+					email,
+					firstName,
+					lastName,
+					password,
+					userInfo?.user?._id,
+				),
+			);
+		}
 	};
 
 	const handleChangePassword = e => {
@@ -51,6 +66,10 @@ function Profile(props) {
 
 	const handleChangeFirstName = e => {
 		setFirstName(e.target.value);
+	};
+
+	const handleChange = e => {
+		console.log('e.target.value', e.target.value);
 	};
 
 	const handleChangeLastName = e => {
@@ -81,6 +100,12 @@ function Profile(props) {
 		};
 	}, [userInfo]);
 
+	useEffect(() => {
+		if (errorUpdate) {
+			toast.error(errorUpdate);
+		}
+	}, [errorUpdate]);
+
 	if (loading) {
 		return (
 			<>
@@ -97,9 +122,9 @@ function Profile(props) {
 					<h1 className="title">User Profile</h1>
 				</div>
 				<>
-					{errorUpdate && (
+					{/* {errorUpdate && (
 						<MessageBox variant="danger">{errorUpdate}</MessageBox>
-					)}
+					)} */}
 					<div>
 						<label htmlFor="name">First Name</label>
 						<input
@@ -110,6 +135,7 @@ function Profile(props) {
 							maxLength="15"
 							value={firstName}
 							onChange={handleChangeFirstName}
+							onBlur={handleChange}
 						></input>
 					</div>
 

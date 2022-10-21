@@ -13,7 +13,7 @@ import {
 	Container,
 } from '@material-ui/core';
 import { LockOpenOutlined } from '@material-ui/icons';
-
+import isEmpty from 'lodash/isEmpty';
 // Components
 import MessageBox from 'components/MessageBox/MessageBox';
 import useStyles from 'config/useStyles';
@@ -30,13 +30,13 @@ export default function SignUp(props) {
 	const [password, setPassword] = useState('');
 	const [phone, setPhone] = useState('');
 
-	const { error } = useSelector(state => state.userRegister);
-
+	const { error, message } = useSelector(state => state.userRegister);
+	console.log('message', message);
 	const { userInfo } = useSelector(state => state.userLogin);
 
 	const dispatch = useDispatch();
 
-	if (userInfo) {
+	if (!isEmpty(userInfo)) {
 		props.history.push('/');
 	}
 
@@ -46,19 +46,37 @@ export default function SignUp(props) {
 		}
 	};
 
+	const isValidEmail = email => {
+		return /\S+@\S+\.\S+/.test(email);
+	};
+
 	const submitHandler = e => {
 		e.preventDefault();
-		if (
-			firstName === '' ||
-			lastName === '' ||
-			email === '' ||
-			password === ''
-		) {
-			toast.error('Information wrong');
+		if (firstName.trim().length < 2 || lastName.trim().length < 2) {
+			toast.error('Firstname and Lastname must be at least 2 characters');
+		} else if (email.trim().length < 6 || !isValidEmail(email)) {
+			toast.error('Email wrong');
+		} else if (password.trim().length < 6) {
+			toast.error('password must be at least 6 characters');
 		} else {
 			dispatch(register(firstName, lastName, phone, email, password));
 		}
 	};
+
+	useEffect(() => {
+		if (error) {
+			toast.error(error);
+		}
+	}, [error]);
+
+	useEffect(() => {
+		if (message) {
+			toast.success(message);
+			// setTimeout(() => {
+			// 	props.history.push('/signin');
+			// }, 100);
+		}
+	}, [message]);
 
 	return (
 		<Container component="main" maxWidth="xs">
@@ -75,7 +93,7 @@ export default function SignUp(props) {
 					noValidate
 					onSubmit={submitHandler}
 				>
-					{error && <MessageBox variant="danger">{error}</MessageBox>}
+					{/* {error && <MessageBox variant="danger">{error}</MessageBox>} */}
 					<Grid container spacing={2}>
 						<Grid item xs={12} sm={6}>
 							<TextField
